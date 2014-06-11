@@ -14,7 +14,7 @@ $(document).ready(function(){
   	
   
 	/*--- Variables ---*/
-	var secretNum;
+    var secretNum;
 	var numGuess=0;
 	var userGuess=+$("#userGuess").val();
 	var feedback=$("#feedback");
@@ -34,7 +34,7 @@ $(document).ready(function(){
 		}
 		var guessingGame=function() {
 	  			if (userGuess===secretNum) {
-	  				feedback.text("Congratulations! You guessed correctly!");
+	  				feedback.text("Congratulations! You guessed correctly! Click on '+New Game' to play again!");
 		  		} else if (difference>=50) {
 		  			feedback.text("Ice Cold!");
 		  		} else if (difference>=30 && difference<50) {
