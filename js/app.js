@@ -30,7 +30,7 @@ $(document).ready(function(){
 		}
 		/*---generate random #---*/
 		var random=function() {
-			secretNum=Math.floor(Math.random()*101);
+			secretNum=Math.floor((Math.random()*100)+1);
 		}
 		var guessingGame=function() {
 	  			if (userGuess===secretNum) {
