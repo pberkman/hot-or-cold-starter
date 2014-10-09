@@ -3,7 +3,8 @@ $(document).ready(function(){
 	
 	/*--- Display information modal box ---*/
 	$(".what").click(function(){
-		$(".overlay").fadeIn(1000);
+	$(".overlay").fadeIn(1000);
+
 	});
 
 	/*--- Hide information modal box ---*/
@@ -11,65 +12,119 @@ $(document).ready(function(){
 		$(".overlay").fadeOut(1000);
 	});
 	
-  
 	/*--- Variables ---*/
     var secretNum;
 	var numGuess=0;
-	var userGuess=+$("#userGuess").val();
 	var feedback=$("#feedback");
-	var difference=Math.abs(userGuess-secretNum);
+	var lastGuess=null;
+
 
 	/*---Functions---*/
-		/*---reset count, guess history and input value---*/
-		var reset=function() {
-			var numGuess=0;
-			$("#count").text(numGuess);
-			$(".guessHistory").remove();
-			$("#userGuess").val("");
-		};
+
 
 		/*---generate random #---*/
 		var random=function() {
-			secretNum=Math.floor((Math.random()*100)+1);
+			secretNum=(Math.floor(Math.random()*100)+1);
 		};
-		var guessingGame=function() {
-			if (userGuess===secretNum) {
-				feedback.text("Congratulations! You guessed correctly! Click on '+New Game' to play again!");
-			} else if (difference>=50) {
-				feedback.text("Ice Cold!");
-			} else if (difference>=30 && difference<50) {
-				feedback.text("Cold!");
-			} else if (difference>=20 && difference<30) {
-				feedback.text("Warm!");
-			} else if (difference>=10 && difference<20) {
-				feedback.text("Hot!");
-			} else {
-				feedback.text("Very Hot!");
-			}
-
-			$("#guessList").append("<li class='guessHistory'>" + userGuess + "</li>");
+		/*---reset count, guess history and input value---*/
+		var reset=function() {
+			numGuess=0;
+			lastGuess=null;
+			$("#count").text(numGuess);
+			$("#guessList li").remove();
+			$("#userGuess").val("");
+			feedback.text("Make your Guess!");
+			random();
+		};
+		/*---adding counts and numbers used---*/
+		var addCount=function() {
+			$("#guessList").append("<li>" + userGuess + "</li>");
+			lastGuess = userGuess; //set the users guess to the last guess variable to use in next guess.
 			numGuess++;
 			$("#count").text(numGuess);
 		};
 
-
-		/*--- Start a new game ---*/
-		$(".new").click(function() {
-			reset();
-			random();
-			/*---Guessing a number---*/
-			$("#guessButton").click(function() {
-				guessingGame();
-			});
-			$(document).keypress(function(e) {
-				if(e.which == 13) {
-					guessingGame();
-				}
-			});
 		
-		});
+
+		/*---guessing function---*/
+		var guessingGame=function() {
+
+			// Check whether closer or farther from last guess
+			var warmORhot=function() {
+				if (thisDifference >= lastDifference) {
+						feedback.text("Getting Colder");
+						addCount();
+				}  else {
+					feedback.text("Getting Hotter");
+					addCount();
+				}
+			};
+
+			userGuess=+$("#userGuess").val();
+			var thisDifference=Math.abs(userGuess-secretNum);
+			var lastDifference=Math.abs(lastGuess-secretNum);
+			if (userGuess===secretNum) {
+				feedback.text("Congratulations! You guessed correctly!");
+					alert('Click on "+ New Game" to play again!');
+					$("form").hide();
+			} else if (thisDifference == lastDifference) {
+				feedback.text("You just chose that number, pick again!");
+			} else if (userGuess>100 || userGuess<=0) {
+				feedback.text("Please pick a number between 1 and 100");
+			} else if (userGuess==="" || userGuess%1!==0) {
+				feedback.text("Please pick a number");
+			} else if (thisDifference>=50) {
+				if (lastGuess==null) {
+					feedback.text("Ice Cold");
+					addCount();
+				} else {
+					warmORhot();
+				}
+			} else if (thisDifference>=30 && thisDifference<50) {
+				if (lastGuess==null) {
+					feedback.text("Cold");
+					addCount();
+				} else {
+					warmORhot();
+				}
+			} else if (thisDifference>=20 && thisDifference<30 || lastGuess == null) {
+				if (lastGuess==null) {
+					feedback.text("Warm");
+					addCount();
+				} else {
+					warmORhot();
+				}
+			} else if (thisDifference>=10 && thisDifference<20 || lastGuess == null) {
+				if (lastGuess==null) {
+					feedback.text("Hot");
+					addCount();
+				} else {
+					warmORhot();
+				}
+			} else {
+				if (lastGuess==null) {
+					feedback.text("Very Hot");
+					addCount();
+				} else {
+					warmORhot();
+				}
+			}
+		};
+		
+
+/*--- Start a new game ---*/
+	$(".new").click(function() {
+		$("form").show();
+		reset();
+	});
+	/*---generate random number---*/
+	random();
+
+/*---Execute Guessing a number---*/
+	$("#guessButton").click(function(ev) {
+		ev.preventDefault();
+		guessingGame();
+		$("#userGuess").val(""); /*---clears input---*/
+	});
+
 });
-
-	
-
-
