@@ -64,9 +64,14 @@ $(document).ready(function(){
 			var thisDifference=Math.abs(userGuess-secretNum);
 			var lastDifference=Math.abs(lastGuess-secretNum);
 			if (userGuess===secretNum) {
-				feedback.text("Congratulations! You guessed correctly!");
-					alert('Click on "+ New Game" to play again!');
-					$("form").hide();
+				$("form").hide();
+				if (numGuess < 10) {
+					feedback.text("Congratulations you're a wiz! You only have to do " + numGuess + " burpees!");
+				} else if (numGuess >= 10 && numGuess < 20) {
+					feedback.text("Not bad! You get to do " + numGuess + " burpees!");
+				} else {
+					feedback.text("Wow about time! You better get going on your " + numGuess + " burpees now!");
+				}
 			} else if (thisDifference == lastDifference) {
 				feedback.text("You just chose that number, pick again!");
 			} else if (userGuess>100 || userGuess<=0) {
