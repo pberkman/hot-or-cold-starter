@@ -17,7 +17,8 @@ $(document).ready(function(){
 	var numGuess=0;
 	var feedback=$("#feedback");
 	var lastGuess=null;
-
+	var blue=255;
+	var red=255;
 
 	/*---Functions---*/
 
@@ -49,20 +50,25 @@ $(document).ready(function(){
 		/*---guessing function---*/
 		var guessingGame=function() {
 
+			// local variables
+			userGuess=+$("#userGuess").val();
+			var thisDifference=Math.abs(userGuess-secretNum);
+			var lastDifference=Math.abs(lastGuess-secretNum);
+
 			// Check whether closer or farther from last guess
 			var warmORhot=function() {
 				if (thisDifference >= lastDifference) {
-						feedback.text("Getting Colder");
-						addCount();
+					feedback.text("Getting Colder");
+					red=red - 10;
+					addCount();
 				}  else {
 					feedback.text("Getting Hotter");
+					blue=blue - 10;
 					addCount();
 				}
 			};
 
-			userGuess=+$("#userGuess").val();
-			var thisDifference=Math.abs(userGuess-secretNum);
-			var lastDifference=Math.abs(lastGuess-secretNum);
+			// if/else based on userGuess
 			if (userGuess===secretNum) {
 				$("form").hide();
 				if (numGuess < 10) {
