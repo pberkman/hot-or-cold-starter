@@ -19,10 +19,15 @@ $(document).ready(function(){
 	var lastGuess=null;
 	var blue=255;
 	var red=255;
-
+	var green=255;
 	/*---Functions---*/
 
-
+		/* animate color */
+		var colorChange=function(red, green, blue) {
+			$(".colorTransition").animate({
+				backgroundColor: "rgb(" + red + "," + green + "," + blue + ")"
+			},1500);
+		};
 		/*---generate random #---*/
 		var random=function() {
 			secretNum=(Math.floor(Math.random()*100)+1);
@@ -31,10 +36,17 @@ $(document).ready(function(){
 		var reset=function() {
 			numGuess=0;
 			lastGuess=null;
+			blue=255;
+			red=255;
+			green=255;
 			$("#count").text(numGuess);
 			$("#guessList li").remove();
 			$("#userGuess").val("");
 			feedback.text("Make your Guess!");
+			$(".colorTransition").animate({
+				backgroundColor:""
+			});
+
 			random();
 		};
 		/*---adding counts and numbers used---*/
@@ -54,22 +66,29 @@ $(document).ready(function(){
 			userGuess=+$("#userGuess").val();
 			var thisDifference=Math.abs(userGuess-secretNum);
 			var lastDifference=Math.abs(lastGuess-secretNum);
-
+			
 			// Check whether closer or farther from last guess
 			var warmORhot=function() {
 				if (thisDifference >= lastDifference) {
 					feedback.text("Getting Colder");
-					red=red - 10;
+					red=red - 6;
+					green=green - 4;
+					blue=blue-2;
+					colorChange(red, green, blue);
 					addCount();
 				}  else {
 					feedback.text("Getting Hotter");
-					blue=blue - 10;
+					red=red+2;
+					blue=blue - 6;
+					green=green - 4;
+					colorChange(red, green, blue);
 					addCount();
 				}
 			};
 
 			// if/else based on userGuess
 			if (userGuess===secretNum) {
+				colorChange(255,0,0);
 				$("form").hide();
 				if (numGuess < 10) {
 					feedback.text("Congratulations you're a wiz! You only have to do " + numGuess + " burpees!");
@@ -86,6 +105,10 @@ $(document).ready(function(){
 				feedback.text("Please pick a number");
 			} else if (thisDifference>=50) {
 				if (lastGuess==null) {
+					red=165;
+					green=242;
+					blue=243;
+					colorChange(red, green, blue);
 					feedback.text("Ice Cold");
 					addCount();
 				} else {
@@ -93,6 +116,9 @@ $(document).ready(function(){
 				}
 			} else if (thisDifference>=30 && thisDifference<50) {
 				if (lastGuess==null) {
+					red=153;
+					green=204;
+					colorChange(red, green, blue);
 					feedback.text("Cold");
 					addCount();
 				} else {
@@ -100,6 +126,9 @@ $(document).ready(function(){
 				}
 			} else if (thisDifference>=20 && thisDifference<30 || lastGuess == null) {
 				if (lastGuess==null) {
+					blue=153;
+					green=204;
+					colorChange(red, green, blue);
 					feedback.text("Warm");
 					addCount();
 				} else {
@@ -107,6 +136,9 @@ $(document).ready(function(){
 				}
 			} else if (thisDifference>=10 && thisDifference<20 || lastGuess == null) {
 				if (lastGuess==null) {
+					green=102;
+					blue=102;
+					colorChange(red, green, blue);
 					feedback.text("Hot");
 					addCount();
 				} else {
@@ -114,6 +146,9 @@ $(document).ready(function(){
 				}
 			} else {
 				if (lastGuess==null) {
+					green=51;
+					blue=51;
+					colorChange(red, green, blue);
 					feedback.text("Very Hot");
 					addCount();
 				} else {
