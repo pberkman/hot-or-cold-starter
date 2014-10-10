@@ -23,11 +23,7 @@ $(document).ready(function(){
 	/*---Functions---*/
 
 		/* animate color */
-		var colorChange=function(red, green, blue) {
-			$(".colorTransition").animate({
-				backgroundColor: "rgb(" + red + "," + green + "," + blue + ")"
-			},1500);
-		};
+		
 		/*---generate random #---*/
 		var random=function() {
 			secretNum=(Math.floor(Math.random()*100)+1);
@@ -67,21 +63,25 @@ $(document).ready(function(){
 			var thisDifference=Math.abs(userGuess-secretNum);
 			var lastDifference=Math.abs(lastGuess-secretNum);
 			
+			// change color of background
+			var colorChange=function(red, green, blue) {
+				$(".colorTransition").animate({
+					backgroundColor: "rgb(" + red + "," + green + "," + blue + ")"
+				},1500);
+			};
 			// Check whether closer or farther from last guess
 			var warmORhot=function() {
 				if (thisDifference >= lastDifference) {
 					feedback.text("Getting Colder");
 					red=red - 6;
 					green=green - 4;
-					blue=blue-2;
-					colorChange(red, green, blue);
+					colorChange(red, green, 255);
 					addCount();
 				}  else {
 					feedback.text("Getting Hotter");
-					red=red+2;
 					blue=blue - 6;
 					green=green - 4;
-					colorChange(red, green, blue);
+					colorChange(255, green, blue);
 					addCount();
 				}
 			};
