@@ -39,10 +39,8 @@ $(document).ready(function(){
 			$("#guessList li").remove();
 			$("#userGuess").val("");
 			feedback.text("Make your Guess!");
-			$(".colorTransition").animate({
-				backgroundColor:""
-			});
-
+			$(".colorTransition").css(
+				"background-color", "transparent");
 			random();
 		};
 		/*---adding counts and numbers used---*/
@@ -73,14 +71,14 @@ $(document).ready(function(){
 			var warmORhot=function() {
 				if (thisDifference >= lastDifference) {
 					feedback.text("Getting Colder");
-					red=red - 6;
-					green=green - 4;
+					red=red - 3;
+					green=green - 1;
 					colorChange(red, green, 255);
 					addCount();
 				}  else {
 					feedback.text("Getting Hotter");
-					blue=blue - 6;
-					green=green - 4;
+					blue=blue - 3;
+					green=green - 1;
 					colorChange(255, green, blue);
 					addCount();
 				}
@@ -104,20 +102,20 @@ $(document).ready(function(){
 			} else if (userGuess==="" || userGuess%1!==0) {
 				feedback.text("Please pick a number");
 			} else if (thisDifference>=50) {
+				red=165;
+				green=242;
+				blue=243;
 				if (lastGuess==null) {
-					red=165;
-					green=242;
-					blue=243;
-					colorChange(red, green, blue);
 					feedback.text("Ice Cold");
+					colorChange(red, green, blue);
 					addCount();
 				} else {
 					warmORhot();
 				}
 			} else if (thisDifference>=30 && thisDifference<50) {
+				red=153;
+				green=204;
 				if (lastGuess==null) {
-					red=153;
-					green=204;
 					colorChange(red, green, blue);
 					feedback.text("Cold");
 					addCount();
@@ -125,9 +123,9 @@ $(document).ready(function(){
 					warmORhot();
 				}
 			} else if (thisDifference>=20 && thisDifference<30 || lastGuess == null) {
+				blue=153;
+				green=204;
 				if (lastGuess==null) {
-					blue=153;
-					green=204;
 					colorChange(red, green, blue);
 					feedback.text("Warm");
 					addCount();
@@ -135,9 +133,9 @@ $(document).ready(function(){
 					warmORhot();
 				}
 			} else if (thisDifference>=10 && thisDifference<20 || lastGuess == null) {
+				green=102;
+				blue=102;
 				if (lastGuess==null) {
-					green=102;
-					blue=102;
 					colorChange(red, green, blue);
 					feedback.text("Hot");
 					addCount();
@@ -145,9 +143,9 @@ $(document).ready(function(){
 					warmORhot();
 				}
 			} else {
-				if (lastGuess==null) {
-					green=51;
-					blue=51;
+				green=51;
+				blue=51;
+				if (lastGuess==null) {	
 					colorChange(red, green, blue);
 					feedback.text("Very Hot");
 					addCount();
